@@ -375,7 +375,7 @@ void TestUserInteraction::setUserActionMarkerColor(int index)
     p.setColor(c);
     plot->setUserActionMarkerPen(p) ;
     QBrush b=plot->getUserActionMarkerBrush();
-    c.setAlphaF(0.4);
+    c.setAlphaF(0.4f);
     b.setColor(c);
     plot->setUserActionMarkerBrush(b) ;
 }
@@ -409,7 +409,7 @@ void TestUserInteraction::setUserActionOverlayFillColor(int index)
 {
     QColor c=jkqtp_String2QColor(cmbUserActionOverlayColor->itemText(index));
     QBrush b=plot->getUserActionOverlayBrush();
-    c.setAlphaF(0.4);
+    c.setAlphaF(0.4f);
     b.setColor(c);
     plot->setUserActionOverlayBrush(b) ;
 }

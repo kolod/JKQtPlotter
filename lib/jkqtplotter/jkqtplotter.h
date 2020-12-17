@@ -1728,7 +1728,7 @@ QT_BEGIN_NAMESPACE
  *  \ingroup jkqtpplottersupprt
 */
 template<>
-inline uint qHash(const QPair<Qt::MouseButton,Qt::KeyboardModifiers> &key, uint seed ) noexcept(noexcept(qHash(key.first, seed)) && noexcept(qHash(key.second, seed))) {
+inline size_t qHash(const QPair<Qt::MouseButton,Qt::KeyboardModifiers> &key, size_t seed ) noexcept(noexcept(qHash(key.first, seed)) && noexcept(qHash(key.second, seed))) {
     return static_cast<uint>(key.first)+static_cast<uint>(key.second);
 }
 
@@ -1737,7 +1737,7 @@ inline uint qHash(const QPair<Qt::MouseButton,Qt::KeyboardModifiers> &key, uint 
  *  \ingroup jkqtpplottersupprt
 */
 template<>
-inline uint qHash(const Qt::MouseButton &key, uint /*seed*/ ) noexcept(noexcept(qHash(key)))  {
+inline size_t qHash(const Qt::MouseButton &key, size_t /*seed*/ ) noexcept(noexcept(qHash(key)))  {
     return static_cast<uint>(key);
 }
 
@@ -1746,7 +1746,7 @@ inline uint qHash(const Qt::MouseButton &key, uint /*seed*/ ) noexcept(noexcept(
  *  \ingroup jkqtpplottersupprt
 */
 template<>
-inline uint qHash(const Qt::KeyboardModifiers &key, uint /*seed*/ ) noexcept(noexcept(qHash(key)))  {
+inline size_t qHash(const Qt::KeyboardModifiers &key, size_t /*seed*/ ) noexcept(noexcept(qHash(key)))  {
     return static_cast<uint>(key);
 }
 

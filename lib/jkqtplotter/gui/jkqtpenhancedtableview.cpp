@@ -129,18 +129,18 @@ void JKQTPEnhancedTableView::copySelectionToExcel(int copyrole, bool storeHead)
     if (sel.size()==1) {
         QVariant vdata=sel[0].data(copyrole);
         QString txt="";
-        switch (vdata.type()) {
-            case QVariant::Int:
-            case QVariant::LongLong:
-            case QVariant::UInt:
-            case QVariant::ULongLong:
-            case QVariant::Bool:
+        switch (vdata.typeId()) {
+            case QMetaType::Int:
+            case QMetaType::LongLong:
+            case QMetaType::UInt:
+            case QMetaType::ULongLong:
+            case QMetaType::Bool:
                 txt=vdata.toString();
                 break;
-            case QVariant::Double:
+            case QMetaType::Double:
                 txt=loc.toString(vdata.toDouble());
                 break;
-            case QVariant::PointF:
+            case QMetaType::QPointF:
                 txt=loc.toString(vdata.toPointF().x());
                 break;
             default:
@@ -165,9 +165,9 @@ void JKQTPEnhancedTableView::copySelectionToExcel(int copyrole, bool storeHead)
                 if (r<rowmin) rowmin=r;
             }
         }
-        QList<int> rowlist=QList<int>::fromSet(rows);
+        QList<int> rowlist(rows.begin(), rows.end());
         std::sort(rowlist.begin(), rowlist.end());
-        QList<int> collist=QList<int>::fromSet(cols);
+        QList<int> collist(cols.begin(), cols.end());
         std::sort(collist.begin(), collist.end());
         int rowcnt=rowlist.size();
         int colcnt=collist.size();
@@ -202,18 +202,18 @@ void JKQTPEnhancedTableView::copySelectionToExcel(int copyrole, bool storeHead)
             int c=collist.indexOf(sel[i].column());
             QVariant vdata=sel[i].data(copyrole);
             QString txt="";
-            switch (vdata.type()) {
-                case QVariant::Int:
-                case QVariant::LongLong:
-                case QVariant::UInt:
-                case QVariant::ULongLong:
-                case QVariant::Bool:
+            switch (vdata.typeId()) {
+                case QMetaType::Int:
+                case QMetaType::LongLong:
+                case QMetaType::UInt:
+                case QMetaType::ULongLong:
+                case QMetaType::Bool:
                     txt=vdata.toString();
                     break;
-                case QVariant::Double:
+                case QMetaType::Double:
                     txt=loc.toString(vdata.toDouble());
                     break;
-                case QVariant::PointF:
+                case QMetaType::QPointF:
                     txt=loc.toString(vdata.toPointF().x());
                     break;
                 default:
@@ -248,18 +248,18 @@ void JKQTPEnhancedTableView::copySelectionToCSV(int copyrole, bool storeHead, co
     if (sel.size()==1) {
         QVariant vdata=sel[0].data(copyrole);
         QString txt="";
-        switch (vdata.type()) {
-            case QVariant::Int:
-            case QVariant::LongLong:
-            case QVariant::UInt:
-            case QVariant::ULongLong:
-            case QVariant::Bool:
+        switch (vdata.typeId()) {
+            case QMetaType::Int:
+            case QMetaType::LongLong:
+            case QMetaType::UInt:
+            case QMetaType::ULongLong:
+            case QMetaType::Bool:
                 txt=vdata.toString();
                 break;
-            case QVariant::Double:
+            case QMetaType::Double:
                 txt=JKQTPDoubleToQString(vdata.toDouble(), 15, 'g', decimalpoint);
                 break;
-            case QVariant::PointF:
+            case QMetaType::QPointF:
                 txt=JKQTPDoubleToQString(vdata.toPointF().x(), 15, 'g', decimalpoint);
                 break;
             default:
@@ -284,9 +284,9 @@ void JKQTPEnhancedTableView::copySelectionToCSV(int copyrole, bool storeHead, co
                 if (r<rowmin) rowmin=r;
             }
         }
-        QList<int> rowlist=QList<int>::fromSet(rows);
+        QList<int> rowlist(rows.begin(), rows.end());
         std::sort(rowlist.begin(), rowlist.end());
-        QList<int> collist=QList<int>::fromSet(cols);
+        QList<int> collist(cols.begin(), cols.end());
         std::sort(collist.begin(), collist.end());
         int rowcnt=rowlist.size();
         int colcnt=collist.size();
@@ -321,18 +321,18 @@ void JKQTPEnhancedTableView::copySelectionToCSV(int copyrole, bool storeHead, co
             int c=collist.indexOf(sel[i].column());
             QVariant vdata=sel[i].data(copyrole);
             QString txt="";
-            switch (vdata.type()) {
-                case QVariant::Int:
-                case QVariant::LongLong:
-                case QVariant::UInt:
-                case QVariant::ULongLong:
-                case QVariant::Bool:
+            switch (vdata.typeId()) {
+                case QMetaType::Int:
+                case QMetaType::LongLong:
+                case QMetaType::UInt:
+                case QMetaType::ULongLong:
+                case QMetaType::Bool:
                     txt=vdata.toString();
                     break;
-                case QVariant::Double:
+                case QMetaType::Double:
                     txt=JKQTPDoubleToQString(vdata.toDouble(), 15, 'g', decimalpoint);
                     break;
-                case QVariant::PointF:
+                case QMetaType::QPointF:
                     txt=JKQTPDoubleToQString(vdata.toPointF().x(), 15, 'g', decimalpoint);
                     break;
                 default:
@@ -447,10 +447,10 @@ void JKQTPEnhancedTableView::print(QPrinter *printer, bool onePageWide, bool one
      /*if (maxWidth*scale>p->pageRect().width()) scale=p->pageRect().width()/maxWidth;
      if (maxHeight*scale>p->pageRect().height()) scale=p->pageRect().height()/maxHeight;*/
      if (onePageWide) {
-         if (totalWidth>p->pageRect().width()) scale=p->pageRect().width()/totalWidth;
+         if (totalWidth>p->pageRect(QPrinter::Millimeter).width()) scale=p->pageRect(QPrinter::Millimeter).width()/totalWidth;
      }
      if (onePageHigh) {
-         if (totalHeight>p->pageRect().height()) scale=qMin(scale, p->pageRect().height()/totalHeight);
+         if (totalHeight>p->pageRect(QPrinter::Millimeter).height()) scale=qMin(scale, p->pageRect(QPrinter::Millimeter).height()/totalHeight);
      }
 
      //qDebug()<<scale;
@@ -467,7 +467,7 @@ void JKQTPEnhancedTableView::print(QPrinter *printer, bool onePageWide, bool one
          if (!onePageWide) {
              for (int c=0; c<cols; c++) {
                  double cw=columnWidth(c);
-                 if (x+cw>p->pageRect().width()/scale) {
+                 if (x+cw>p->pageRect(QPrinter::Millimeter).width()/scale) {
                      pagesWide++;
                      x=0;
                      pageCols<<c;
@@ -483,7 +483,7 @@ void JKQTPEnhancedTableView::print(QPrinter *printer, bool onePageWide, bool one
          if (!onePageHigh) {
              for (int r=0; r<rows; r++) {
                  double rh=rowHeight(r);
-                 if (y+rh>p->pageRect().height()/scale) {
+                 if (y+rh>p->pageRect(QPrinter::Millimeter).height()/scale) {
                      pagesHigh++;
                      pageRows<<r;
                      y=hhh;
@@ -551,7 +551,8 @@ QSizeF JKQTPEnhancedTableView::getTotalSize() const
 void JKQTPEnhancedTableView::paint(QPainter &painter, double scale, int page, double hhh, double vhw, const QList<int>& pageCols, const QList<int>& pageRows, QPrinter* p)
 {
     painter.save(); auto __finalpaint=JKQTPFinally([&painter]() {painter.restore();});
-    QStyleOptionViewItem option = viewOptions();
+    QStyleOptionViewItem option;
+    option.initFrom(this);
     painter.scale(scale, scale);
     QPen headerPen("black");
     headerPen.setWidth(2);

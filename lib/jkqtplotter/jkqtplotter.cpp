@@ -479,7 +479,6 @@ void JKQTPlotter::paintUserAction() {
         image=oldImage;
         if (image.width()>0 && image.height()>0 && !image.isNull()) {
             JKQTPEnhancedPainter painter(&image);
-            painter.setRenderHint(JKQTPEnhancedPainter::NonCosmeticDefaultPen, true);
             painter.setRenderHint(JKQTPEnhancedPainter::Antialiasing, true);
             painter.setRenderHint(JKQTPEnhancedPainter::TextAntialiasing, true);
             painter.setPen(plotterStyle.userActionOverlayPen);
@@ -678,14 +677,14 @@ void JKQTPlotter::paintUserAction() {
 
 void JKQTPlotter::mouseMoveEvent ( QMouseEvent * event ) {
     if (plotterStyle.displayMousePosition) {
-        mousePosX=plotter->p2x(event->x()/magnification);
-        mousePosY=plotter->p2y((event->y()-getPlotYOffset())/magnification);
+        mousePosX=plotter->p2x(event->position().x()/magnification);
+        mousePosY=plotter->p2y((event->position().y()-getPlotYOffset())/magnification);
         update();
     }
 
     if (plotterStyle.toolbarEnabled && (!plotterStyle.toolbarAlwaysOn) && (!toolbar->isVisible())) { // decide whether to display toolbar
         int y1=10;
-        if (event->y()/magnification>=0 && event->y()/magnification<=y1) {
+        if (event->position().y()/magnification>=0 && event->position().y()/magnification<=y1) {
             toolbar->show();
             toolbar->move(1,1);
         }
@@ -713,10 +712,10 @@ void JKQTPlotter::mouseMoveEvent ( QMouseEvent * event ) {
                 mouseDragRectXStartPixel=mouseDragRectXEndPixel;
                 mouseDragRectYStartPixel=mouseDragRectYEndPixel;
              }
-            mouseDragRectXEnd=plotter->p2x(event->x()/magnification);
-            mouseDragRectYEnd=plotter->p2y((event->y()-getPlotYOffset())/magnification);
-            mouseDragRectXEndPixel=event->x();
-            mouseDragRectYEndPixel=event->y();
+            mouseDragRectXEnd=plotter->p2x(event->position().x()/magnification);
+            mouseDragRectYEnd=plotter->p2y((event->position().y()-getPlotYOffset())/magnification);
+            mouseDragRectXEndPixel=event->position().x();
+            mouseDragRectYEndPixel=event->position().y();
 
 
             if (currentMouseDragAction.mode==jkqtpmdaToolTipForClosestDataPoint) {
@@ -762,9 +761,9 @@ void JKQTPlotter::mouseMoveEvent ( QMouseEvent * event ) {
     }
 
     // emit move signal, if event occured inside plot only
-    if  ( (event->x()/magnification>=plotter->getInternalPlotBorderLeft()) && (event->x()/magnification<=plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft())  &&
-          ((event->y()-getPlotYOffset())/magnification>=plotter->getInternalPlotBorderTop()) && ((event->y()-getPlotYOffset())/magnification<=plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
-        emit plotMouseMove(plotter->p2x(event->x()/magnification), plotter->p2y((event->y()-getPlotYOffset())/magnification));
+    if  ( (event->position().x()/magnification>=plotter->getInternalPlotBorderLeft()) && (event->position().x()/magnification<=plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft())  &&
+          ((event->position().y()-getPlotYOffset())/magnification>=plotter->getInternalPlotBorderTop()) && ((event->position().y()-getPlotYOffset())/magnification<=plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
+        emit plotMouseMove(plotter->p2x(event->position().x()/magnification), plotter->p2y((event->position().y()-getPlotYOffset())/magnification));
     }
     updateCursor();
 }
@@ -779,28 +778,28 @@ void JKQTPlotter::mousePressEvent ( QMouseEvent * event ){
     auto actionIT=findMatchingMouseDragAction(event->button(), event->modifiers(), &foundIT);
     if (foundIT) {
         // we found a matching action
-        mouseLastClickX=event->x();
-        mouseLastClickY=event->y();
-        mouseDragRectXStart=plotter->p2x(event->x()/magnification);
-        mouseDragRectYStart=plotter->p2y((event->y()-getPlotYOffset())/magnification);
-        mouseDragRectXEndPixel=mouseDragRectXStartPixel=event->x();
-        mouseDragRectYEndPixel=mouseDragRectYStartPixel=event->y();
+        mouseLastClickX=event->position().x();
+        mouseLastClickY=event->position().y();
+        mouseDragRectXStart=plotter->p2x(event->position().x()/magnification);
+        mouseDragRectYStart=plotter->p2y((event->position().y()-getPlotYOffset())/magnification);
+        mouseDragRectXEndPixel=mouseDragRectXStartPixel=event->position().x();
+        mouseDragRectYEndPixel=mouseDragRectYStartPixel=event->position().y();
         currentMouseDragAction=MouseDragAction(actionIT.key().first, actionIT.key().second, actionIT.value());
         mouseDragingRectangle=true;
         oldImage=image;
         if (currentMouseDragAction.mode==jkqtpmdaScribbleForEvents) emit userScribbleClick(mouseDragRectXStart, mouseDragRectYStart, event->modifiers(), true, false);
         event->accept();
     } else if (event->button()==Qt::RightButton && event->modifiers()==Qt::NoModifier && contextMenuMode!=jkqtpcmmNoContextMenu) {
-        mouseLastClickX=event->x();
-        mouseLastClickY=event->y();
-        openContextMenu(event->x(), event->y());
+        mouseLastClickX=event->position().x();
+        mouseLastClickY=event->position().y();
+        openContextMenu(event->position().x(), event->position().y());
         event->accept();
     }
 
     // emit clicked signal, if event occured inside plot only
-    if  ( (event->x()/magnification>=plotter->getInternalPlotBorderLeft()) && (event->x()/magnification<=plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft())  &&
-          ((event->y()-getPlotYOffset())/magnification>=plotter->getInternalPlotBorderTop()) && ((event->y()-getPlotYOffset())/magnification<=plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
-        emit plotMouseClicked(plotter->p2x(event->x()/magnification), plotter->p2y((event->y()-getPlotYOffset())/magnification), event->modifiers(), event->button());
+    if  ( (event->position().x()/magnification>=plotter->getInternalPlotBorderLeft()) && (event->position().x()/magnification<=plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft())  &&
+          ((event->position().y()-getPlotYOffset())/magnification>=plotter->getInternalPlotBorderTop()) && ((event->position().y()-getPlotYOffset())/magnification<=plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
+        emit plotMouseClicked(plotter->p2x(event->position().x()/magnification), plotter->p2y((event->position().y()-getPlotYOffset())/magnification), event->modifiers(), event->button());
         event->accept();
     }
     updateCursor();
@@ -815,10 +814,10 @@ void JKQTPlotter::mouseReleaseEvent ( QMouseEvent * event ){
         return;
     }
     if (currentMouseDragAction.isValid()) {
-        mouseDragRectXEnd=plotter->p2x(event->x()/magnification);
-        mouseDragRectYEnd=plotter->p2y((event->y()-getPlotYOffset())/magnification);
-        mouseDragRectXEndPixel=event->x();
-        mouseDragRectYEndPixel=event->y();
+        mouseDragRectXEnd=plotter->p2x(event->position().x()/magnification);
+        mouseDragRectYEnd=plotter->p2y((event->position().y()-getPlotYOffset())/magnification);
+        mouseDragRectXEndPixel=event->position().x();
+        mouseDragRectYEndPixel=event->position().y();
         image=oldImage;
         //update();
         mouseDragingRectangle=false;
@@ -885,21 +884,21 @@ void JKQTPlotter::mouseDoubleClickEvent ( QMouseEvent * event ){
     if (itAction!=plotterStyle.registeredMouseDoubleClickActions.end())  {
         // we found an action to perform on this double-click
         if (itAction.value()==JKQTPMouseDoubleClickActions::jkqtpdcaClickOpensContextMenu) {
-            openStandardContextMenu(event->x(), event->y());
+            openStandardContextMenu(event->position().x(), event->position().y());
         } else if (itAction.value()==JKQTPMouseDoubleClickActions::jkqtpdcaClickOpensSpecialContextMenu) {
-            openSpecialContextMenu(event->x(), event->y());
+            openSpecialContextMenu(event->position().x(), event->position().y());
         } else if (itAction.value()==JKQTPMouseDoubleClickActions::jkqtpdcaClickZoomsIn || itAction.value()==JKQTPMouseDoubleClickActions::jkqtpdcaClickZoomsOut) {
             double factor=4.0;
             if (itAction.value()==JKQTPMouseDoubleClickActions::jkqtpdcaClickZoomsOut) factor=1;
 
-            double xmin=plotter->p2x(static_cast<double>(event->x())/magnification-static_cast<double>(plotter->getPlotWidth())/factor);
-            double xmax=plotter->p2x(static_cast<double>(event->x())/magnification+static_cast<double>(plotter->getPlotWidth())/factor);
-            double ymin=plotter->p2y(static_cast<double>(event->y())/magnification-static_cast<double>(getPlotYOffset())+static_cast<double>(plotter->getPlotHeight())/factor);
-            double ymax=plotter->p2y(static_cast<double>(event->y())/magnification-static_cast<double>(getPlotYOffset())-static_cast<double>(plotter->getPlotHeight())/factor);
-            if  ( (event->x()/magnification<plotter->getInternalPlotBorderLeft()) || (event->x()/magnification>plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft()) ) {
+            double xmin=plotter->p2x(static_cast<double>(event->position().x())/magnification-static_cast<double>(plotter->getPlotWidth())/factor);
+            double xmax=plotter->p2x(static_cast<double>(event->position().x())/magnification+static_cast<double>(plotter->getPlotWidth())/factor);
+            double ymin=plotter->p2y(static_cast<double>(event->position().y())/magnification-static_cast<double>(getPlotYOffset())+static_cast<double>(plotter->getPlotHeight())/factor);
+            double ymax=plotter->p2y(static_cast<double>(event->position().y())/magnification-static_cast<double>(getPlotYOffset())-static_cast<double>(plotter->getPlotHeight())/factor);
+            if  ( (event->position().x()/magnification<plotter->getInternalPlotBorderLeft()) || (event->position().x()/magnification>plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft()) ) {
                 xmin=getXMin();
                 xmax=getXMax();
-            } else if (((event->y()-getPlotYOffset())/magnification<plotter->getInternalPlotBorderTop()) || ((event->y()-getPlotYOffset())/magnification>plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
+            } else if (((event->position().y()-getPlotYOffset())/magnification<plotter->getInternalPlotBorderTop()) || ((event->position().y()-getPlotYOffset())/magnification>plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
                 ymin=getYMin();
                 ymax=getYMax();
             }
@@ -907,25 +906,25 @@ void JKQTPlotter::mouseDoubleClickEvent ( QMouseEvent * event ){
             update();
         } else if (itAction.value()==JKQTPMouseDoubleClickActions::jkqtpdcaClickMovesViewport) {
             QRectF zoomRect= QRectF(QPointF(plotter->x2p(getXAxis()->getMin()),plotter->y2p(getYAxis()->getMax())), QPointF(plotter->x2p(getXAxis()->getMax()),plotter->y2p(getYAxis()->getMin())));
-            if  ( (event->x()/magnification<plotter->getInternalPlotBorderLeft()) || (event->x()/magnification>plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft()) ) {
-                zoomRect.moveCenter(QPointF(zoomRect.center().x(), event->y()));
-            } else if (((event->y()-getPlotYOffset())/magnification<plotter->getInternalPlotBorderTop()) || ((event->y()-getPlotYOffset())/magnification>plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
-                zoomRect.moveCenter(QPointF(event->x(), zoomRect.center().y()));
+            if  ( (event->position().x()/magnification<plotter->getInternalPlotBorderLeft()) || (event->position().x()/magnification>plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft()) ) {
+                zoomRect.moveCenter(QPointF(zoomRect.center().x(), event->position().y()));
+            } else if (((event->position().y()-getPlotYOffset())/magnification<plotter->getInternalPlotBorderTop()) || ((event->position().y()-getPlotYOffset())/magnification>plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
+                zoomRect.moveCenter(QPointF(event->position().x(), zoomRect.center().y()));
             } else {
-                zoomRect.moveCenter(QPointF(event->x(), event->y()));
+                zoomRect.moveCenter(QPointF(event->position().x(), event->position().y()));
             }
             setXY(plotter->p2x(zoomRect.left()), plotter->p2x(zoomRect.right()), plotter->p2y(zoomRect.bottom()), plotter->p2y(zoomRect.top()));
         }
     }
 
     // only react on double clicks inside the widget
-    if  ( (event->x()/magnification>=plotter->getInternalPlotBorderLeft()) && (event->x()/magnification<=plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft())  &&
-          ((event->y()-getPlotYOffset())/magnification>=plotter->getInternalPlotBorderTop()) && ((event->y()-getPlotYOffset())/magnification<=plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
+    if  ( (event->position().x()/magnification>=plotter->getInternalPlotBorderLeft()) && (event->position().x()/magnification<=plotter->getPlotWidth()+plotter->getInternalPlotBorderLeft())  &&
+          ((event->position().y()-getPlotYOffset())/magnification>=plotter->getInternalPlotBorderTop()) && ((event->position().y()-getPlotYOffset())/magnification<=plotter->getPlotHeight()+plotter->getInternalPlotBorderTop()) ) {
 
-        mouseLastClickX=event->x();
-        mouseLastClickY=event->y();
+        mouseLastClickX=event->position().x();
+        mouseLastClickY=event->position().y();
 
-        emit plotMouseDoubleClicked(plotter->p2x(event->x()/magnification), plotter->p2y((event->y()-getPlotYOffset())/magnification), event->modifiers(), event->button());
+        emit plotMouseDoubleClicked(plotter->p2x(event->position().x()/magnification), plotter->p2y((event->position().y()-getPlotYOffset())/magnification), event->modifiers(), event->button());
 
     }
     event->accept();
@@ -1433,12 +1432,12 @@ QAction* JKQTPlotter::getActMouseLeftAsToolTip() const {
 
 void JKQTPlotter::setOverrideMouseDragAction(Qt::MouseButton button, Qt::KeyboardModifiers modifier, JKQTPMouseDragActions action)
 {
-    registeredOverrideMouseDragActionModes.insert(qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier), action);
+    registeredOverrideMouseDragActionModes.insert(std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier), action);
 }
 
 void JKQTPlotter::resetOverrideMouseDragAction(Qt::MouseButton button, Qt::KeyboardModifiers modifier)
 {
-    registeredOverrideMouseDragActionModes.remove(qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier));
+    registeredOverrideMouseDragActionModes.remove(std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier));
 }
 
 void JKQTPlotter::setContextMenuMode(JKQTPContextMenuModes mode) {
@@ -1681,7 +1680,7 @@ JKQTPMouseDragActionsHashMapIterator JKQTPlotter::findMatchingMouseDragAction(Qt
 {
     JKQTPMouseDragActionsHashMapIterator it=registeredOverrideMouseDragActionModes.begin();
     while (it!=registeredOverrideMouseDragActionModes.end() ) {
-        if (it.key()==qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifiers)) {
+        if (it.key()== std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifiers)) {
             if (found) *found=true;
             return it;
         }
@@ -1689,7 +1688,7 @@ JKQTPMouseDragActionsHashMapIterator JKQTPlotter::findMatchingMouseDragAction(Qt
     }
     it=plotterStyle.registeredMouseDragActionModes.begin();
     while (it!=plotterStyle.registeredMouseDragActionModes.end() ) {
-        if (it.key()==qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifiers)) {
+        if (it.key()== std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifiers)) {
             if (found) *found=true;
             return it;
         }
@@ -1702,7 +1701,7 @@ JKQTPMouseDragActionsHashMapIterator JKQTPlotter::findMatchingMouseDragAction(Qt
 JKQTPMouseDoubleClickActionsHashMapIterator JKQTPlotter::findMatchingMouseDoubleClickAction(Qt::MouseButton button, Qt::KeyboardModifiers modifiers) const
 {
     for (JKQTPMouseDoubleClickActionsHashMapIterator it=plotterStyle.registeredMouseDoubleClickActions.begin(); it!=plotterStyle.registeredMouseDoubleClickActions.end(); ++it) {
-        if (it.key()==qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifiers)) {
+        if (it.key()== std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifiers)) {
             return it;
         }
     }
@@ -1730,7 +1729,7 @@ void JKQTPlotter::setPlotUpdateEnabled(bool enable)
 
 void JKQTPlotter::registerMouseDragAction(Qt::MouseButton button, Qt::KeyboardModifiers modifier, JKQTPMouseDragActions action)
 {
-    plotterStyle.registeredMouseDragActionModes[qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier)]=action;
+    plotterStyle.registeredMouseDragActionModes[std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier)]=action;
     if (button==Qt::LeftButton && modifier==Qt::NoModifier) {
         actMouseLeftAsDefault->setChecked(true);
         resetMouseLeftAction();
@@ -1739,7 +1738,7 @@ void JKQTPlotter::registerMouseDragAction(Qt::MouseButton button, Qt::KeyboardMo
 
 void JKQTPlotter::deregisterMouseDragAction(Qt::MouseButton button, Qt::KeyboardModifiers modifier)
 {
-    plotterStyle.registeredMouseDragActionModes.remove(qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier));
+    plotterStyle.registeredMouseDragActionModes.remove(std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier));
 }
 
 void JKQTPlotter::clearAllRegisteredMouseDragActions()
@@ -1749,12 +1748,12 @@ void JKQTPlotter::clearAllRegisteredMouseDragActions()
 
 void JKQTPlotter::registerMouseDoubleClickAction(Qt::MouseButton button, Qt::KeyboardModifiers modifier, JKQTPMouseDoubleClickActions action)
 {
-    plotterStyle.registeredMouseDoubleClickActions[qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier)]=action;
+    plotterStyle.registeredMouseDoubleClickActions[std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier)]=action;
 }
 
 void JKQTPlotter::deregisterMouseDoubleClickAction(Qt::MouseButton button, Qt::KeyboardModifiers modifier)
 {
-    plotterStyle.registeredMouseDoubleClickActions.remove(qMakePair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier));
+    plotterStyle.registeredMouseDoubleClickActions.remove(std::pair<Qt::MouseButton, Qt::KeyboardModifiers>(button, modifier));
 }
 
 void JKQTPlotter::clearAllRegisteredMouseDoubleClickActions()

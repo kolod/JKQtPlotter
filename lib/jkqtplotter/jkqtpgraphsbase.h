@@ -609,10 +609,6 @@ public slots:
     void setXYColumns(std::pair<int,int> xyColPair);
     /** \brief sets xColumn and yColumn at the same time */
     void setXYColumns(std::pair<size_t,size_t> xyColPair);
-    /** \brief sets xColumn and yColumn at the same time */
-    void setXYColumns(QPair<int,int> xyColPair);
-    /** \brief sets xColumn and yColumn at the same time */
-    void setXYColumns(QPair<size_t,size_t> xyColPair);
     /** \copydoc sortData */
     void setDataSortOrder(int __value);
     /** \copydoc sortData */

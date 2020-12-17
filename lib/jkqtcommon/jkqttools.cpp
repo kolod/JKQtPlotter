@@ -23,7 +23,7 @@
 
 #include <QList>
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QLocale>
 #include <QtCore>
 
@@ -36,9 +36,9 @@ void jkloadWidgetGeometry(QSettings& settings, QWidget* widget, QPoint defaultPo
     QPoint pos = settings.value(prefix+"pos", defaultPosition).toPoint();
     QSize size = settings.value(prefix+"size", defaultSize).toSize();
 
-    widget->resize(size.boundedTo(QApplication::desktop()->screenGeometry(widget).size()));
-    if (pos.x()<0 || pos.x()>QApplication::desktop()->screenGeometry(widget).width()) pos.setX(0);
-    if (pos.y()<0 || pos.y()>QApplication::desktop()->screenGeometry(widget).height()) pos.setY(0);
+    widget->resize(size.boundedTo(QApplication::primaryScreen()->availableSize()));
+    if (pos.x()<0 || pos.x()>QApplication::primaryScreen()->geometry().width()) pos.setX(0);
+    if (pos.y()<0 || pos.y()>QApplication::primaryScreen()->geometry().height()) pos.setY(0);
     widget->move(pos);
 }
 
@@ -78,18 +78,18 @@ QString jkVariantListToString(const QList<QVariant>& data, const QString& separa
     for (int i=0; i<data.size(); i++) {
         if (i>0) r=r+separator;
         QVariant v=data[i];
-        switch (v.type()) {
-            case QVariant::Bool: r=r+loc.toString(v.toBool()); break;
-            case QVariant::Char: r=r+loc.toString(v.toInt()); break;
-            case QVariant::Date: r=r+loc.toString(v.toDate()); break;
-            case QVariant::DateTime: r=r+loc.toString(v.toDateTime()); break;
-            case QVariant::Double: r=r+loc.toString(v.toDouble()); break;
-            case QVariant::Int: r=r+loc.toString(v.toInt()); break;
-            case QVariant::LongLong: r=r+loc.toString(v.toLongLong()); break;
-            case QVariant::String: r=r+QString("\"%1\"").arg(v.toString().replace("\"", "_").replace("\t", " ").replace("\r", "").replace("\n", " ").replace(",", " ").replace(";", " ")); break;
-            case QVariant::Time: r=r+loc.toString(v.toTime()); break;
-            case QVariant::UInt: r=r+loc.toString(v.toUInt()); break;
-            case QVariant::ULongLong: r=r+loc.toString(v.toULongLong()); break;
+        switch (v.typeId()) {
+            case QMetaType::Bool: r=r+loc.toString(v.toBool()); break;
+            case QMetaType::Char: r=r+loc.toString(v.toInt()); break;
+            case QMetaType::QDate: r=r+loc.toString(v.toDate()); break;
+            case QMetaType::QDateTime: r=r+loc.toString(v.toDateTime()); break;
+            case QMetaType::Double: r=r+loc.toString(v.toDouble()); break;
+            case QMetaType::Int: r=r+loc.toString(v.toInt()); break;
+            case QMetaType::LongLong: r=r+loc.toString(v.toLongLong()); break;
+            case QMetaType::QString: r=r+QString("\"%1\"").arg(v.toString().replace("\"", "_").replace("\t", " ").replace("\r", "").replace("\n", " ").replace(",", " ").replace(";", " ")); break;
+            case QMetaType::QTime: r=r+loc.toString(v.toTime()); break;
+            case QMetaType::UInt: r=r+loc.toString(v.toUInt()); break;
+            case QMetaType::ULongLong: r=r+loc.toString(v.toULongLong()); break;
             //case : r=r+loc.toString(v.); break;
             default: r=r+v.toString(); break;
         }
@@ -101,7 +101,7 @@ JKQTCOMMON_LIB_EXPORT QString jkqtp_filenameize(const QString& data) {
     QString r;
     QString data1=data.simplified();
     for (int i=0; i<data1.size(); i++) {
-        QCharRef c=data1[i];
+        auto c=data1[i];
         if (c.isLetterOrNumber() || (c=='-') || (c=='_') || (c=='.')) {
             r+=c;
         } else {
@@ -167,7 +167,7 @@ QString jkqtp_MouseButton2String(Qt::MouseButton button, bool useNONE)
     }
     if (button==Qt::LeftButton) return "LEFT";
     if (button==Qt::RightButton) return "RIGHT";
-    if (button==Qt::MidButton) return "MIDDLE";
+    if (button==Qt::MiddleButton) return "MIDDLE";
     if (button==Qt::BackButton) return "BACK";
     if (button==Qt::ForwardButton) return "FORWARD";
     if (button==Qt::TaskButton) return "TASK";
@@ -200,7 +200,7 @@ Qt::MouseButton jkqtp_String2MouseButton(const QString &button)
     auto but=button.toUpper().trimmed();
     if (but=="LEFT") return Qt::LeftButton;
     if (but=="RIGHT") return Qt::RightButton;
-    if (but=="MIDDLE") return Qt::MidButton;
+    if (but=="MIDDLE") return Qt::MiddleButton;
     if (but=="BACK") return Qt::BackButton;
     if (but=="FORWARD") return Qt::ForwardButton;
     if (but=="TASK") return Qt::TaskButton;

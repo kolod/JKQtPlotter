@@ -30,12 +30,12 @@ if(MSVC)
     add_definitions(/D_CRT_NO_VA_START_VALIDATION)
 endif()
 
-# add the example executable 
+# add the example executable
 add_executable(${EXENAME} WIN32 simpletest.cpp)
-# ... link against Qt5 and JKQTPlotterLib
-#    (you could use JKQTPlotterSharedLib if you don't want to link againast the 
+# ... link against Qt6 and JKQTPlotterLib
+#    (you could use JKQTPlotterSharedLib if you don't want to link againast the
 #     static version, but against the shared/DLL version).
-target_link_libraries(${EXENAME} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::PrintSupport Qt5::Svg Qt5::Xml JKQTPlotterLib)
+target_link_libraries(${EXENAME} Qt6::Core Qt6::Widgets Qt6::Gui Qt6::PrintSupport Qt6::Svg Qt6::Xml JKQTPlotterLib)
 
 # Installation
 install(TARGETS ${EXENAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

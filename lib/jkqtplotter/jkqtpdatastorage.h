@@ -2518,7 +2518,7 @@ quint16 JKQTPColumn::calculateChecksum() const
 {
     if (!datastore) return 0;
     if (!datastore->getItem(datastoreItem)) return 0;
-    return qChecksum(reinterpret_cast<const char*>(getPointer(0)), static_cast<uint>(getRows()*sizeof(double)));
+    return qChecksum(QByteArrayView(reinterpret_cast<const char*>(getPointer(0)), static_cast<uint>(getRows() * sizeof(double))), Qt::ChecksumIso3309);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

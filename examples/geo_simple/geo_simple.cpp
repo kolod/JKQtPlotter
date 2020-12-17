@@ -32,7 +32,7 @@ void drawExample(JKQTPlotter* plot, double x0, double y0, double wid, double hei
     JKQTPGeoBaseFilled* fillobj=dynamic_cast<JKQTPGeoBaseFilled*>(obj);
     if (fillobj) {
         fillobj->setFillColor(QColor("lightblue"));
-        fillobj->setAlpha(0.8);
+        fillobj->setAlpha(0.8f);
     }
     JKQTPGeoLine* l;
     plot->addGraph(new JKQTPGeoSymbol(plot, x0, y0,  JKQTPCircle, 5, QColor("red")));
@@ -65,7 +65,7 @@ void drawEllExample(JKQTPlotter* plot, double x0, double y0, double wid, double 
     fillobj->setFillColor(Qt::transparent);
     fillobj->setLineWidth(1);
     fillobj->setFillColor(QColor("lightblue"));
-    fillobj->setAlpha(0.8);
+    fillobj->setAlpha(0.8f);
     fillobj->setAngle(angle);
     plot->addGraph(new JKQTPGeoSymbol(plot, x0, y0,  JKQTPCircle, 5, QColor("red")));
     plot->addGraph(new JKQTPGeoText(plot, x0,y0-0.05*heig, "(x,y)", 10, QColor("red")));

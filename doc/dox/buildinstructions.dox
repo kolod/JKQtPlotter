@@ -12,7 +12,7 @@ This page explains how to build JKQTPlotter and to use the results in your own P
 
 The preferred way to build JKQTPlotter is using <a href="https://cmake.org/">CMake</a>. You can find a detailed explanation of CMake at https://cliutils.gitlab.io/modern-cmake/. The CMake-build is defined in `CMakeLists.txt` files, found in many of the directories of the code repository. Especially in the root directory and the two subdirectories \c ./lib/ and \c ./examples/ .
 
-You can build JKQTPlotter (and also the examples) by either opening the file <a href="https://github.com/jkriege2/JKQtPlotter/blob/master/CMakeLists.txt">CMakeLists.txt</a> in QTCreator (which has CMake integration), or by calling \c CMake by hand. How to do this depends on your local system und build environment. 
+You can build JKQTPlotter (and also the examples) by either opening the file <a href="https://github.com/jkriege2/JKQtPlotter/blob/master/CMakeLists.txt">CMakeLists.txt</a> in QTCreator (which has CMake integration), or by calling \c CMake by hand. How to do this depends on your local system und build environment.
 
 
 \subsubsection page_buildinstructions_CMAKE_MAKEFILE Building with MinGW/GNU/... Makefiles
@@ -107,12 +107,12 @@ Here is the \c CMakeLists.txt from that directory:
 		add_definitions(/D_CRT_NO_VA_START_VALIDATION)
 	endif()
 
-	# add the example executable 
+	# add the example executable
 	add_executable(${EXENAME} WIN32 simpletest.cpp)
 	# ... link against Qt5 and JKQTPlotterLib
-	#    (you could use JKQTPlotterSharedLib if you don't want to link againast the 
+	#    (you could use JKQTPlotterSharedLib if you don't want to link againast the
 	#     static version, but against the shared/DLL version).
-	target_link_libraries(${EXENAME} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::PrintSupport Qt5::Svg Qt5::Xml JKQTPlotterLib)
+	target_link_libraries(${EXENAME} Qt6::Core Qt6::Widgets Qt6::Gui Qt6::PrintSupport Qt6::Svg Qt6::Xml JKQTPlotterLib)
 
 	# Installation
 	install(TARGETS ${EXENAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

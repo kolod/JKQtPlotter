@@ -34,7 +34,7 @@
 #include <cmath>
 #include <iostream>
 #include <QMutex>
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include "jkqtcommon/jkqtpmathtools.h"
 #ifdef DEBUG_TIMING
 #  include "jkqtcommon/jkqtphighrestimer.h"
@@ -83,7 +83,7 @@ class JKQTFPPlot;
     .
 
 */
-class JKQTFASTPLOTTER_LIB_EXPORT JKQTFastPlotter : public QGLWidget {
+class JKQTFASTPLOTTER_LIB_EXPORT JKQTFastPlotter : public QOpenGLWidget {
         Q_OBJECT
     public:
 

@@ -75,7 +75,7 @@ if(JKQtPlotter_BUILD_SHARED_LIBS)
     add_library(${libsh_name} SHARED  ${SOURCES} ${HEADERS})
     set_property(TARGET ${libsh_name} PROPERTY VERSION "${PROJECT_VERSION}")
     set_property(TARGET ${libsh_name} PROPERTY OUTPUT_NAME  "${libsh_name_decorated}")
-    target_link_libraries(${libsh_name} PUBLIC Qt5::Core Qt5::Gui Qt5::Xml Qt5::Widgets Qt5::PrintSupport)
+    target_link_libraries(${libsh_name} PUBLIC Qt6::Core Qt6::Gui Qt6::Xml Qt6::Widgets Qt6::PrintSupport)
     target_compile_definitions(${libsh_name} PUBLIC JKQTCOMMON_LIB_IN_DLL)
     target_compile_definitions(${libsh_name} PRIVATE JKQTCOMMON_LIB_EXPORT_LIBRARY)
     set_property(TARGET ${libsh_name} PROPERTY CXX_STANDARD 11)
@@ -91,12 +91,12 @@ if(JKQtPlotter_BUILD_SHARED_LIBS)
     endif()
     target_include_directories(${libsh_name} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>  
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
     set_target_properties(${libsh_name} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS "ON")
-    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake 
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
@@ -116,12 +116,12 @@ if(JKQtPlotter_BUILD_STATIC_LIBS)
     endif()
     target_include_directories(${lib_name} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>  
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
-    target_link_libraries(${lib_name} PUBLIC Qt5::Core Qt5::Gui Qt5::Xml Qt5::Widgets Qt5::PrintSupport)
+    target_link_libraries(${lib_name} PUBLIC Qt6::Core Qt6::Gui Qt6::Xml Qt6::Widgets Qt6::PrintSupport)
     write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Version.cmake
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 

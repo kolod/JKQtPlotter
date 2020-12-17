@@ -143,19 +143,19 @@ int main(int argc, char* argv[])
 
     // 3.5 some circles and elllipses
     plot->addGraph(new JKQTPGeoText(plot, 1.1,1.95, "\\textbf{Circles/Ellipses:}", 14, QColor("red")));
-    QColor col=QColor("blue"); col.setAlphaF(0.2);
+    QColor col=QColor("blue"); col.setAlphaF(0.2f);
     plot->addGraph(geo=new JKQTPGeoRectangle(plot, 1.5,1.5,0.8,0.8));
     geo->setStyleTransparentFill(col, 0.5, Qt::SolidLine);
     col.setAlphaF(1);
     plot->addGraph(geo=new JKQTPGeoEllipse(plot, 1.5,1.5,0.8,0.8));
     geo->setStyle(col, 1, Qt::SolidLine, QColor("lightblue"), Qt::SolidPattern);
-    col=QColor("blue"); col.setAlphaF(0.2);
+    col=QColor("blue"); col.setAlphaF(0.2f);
     plot->addGraph(geo=new JKQTPGeoRectangle(plot, QPointF(1.4,1.3), QPointF(1.9,1.6)));
     geo->setStyleTransparentFill(col, 0.5, Qt::SolidLine);
     col.setAlphaF(1);
     plot->addGraph(geo=new JKQTPGeoEllipse(plot, QPointF(1.4,1.3), QPointF(1.9,1.6)));
     geo->setStyle(col, 1, Qt::SolidLine, rfill, Qt::SolidPattern);
-    col=QColor("darkblue"); col.setAlphaF(0.2);
+    col=QColor("darkblue"); col.setAlphaF(0.2f);
     plot->addGraph(rec=new JKQTPGeoRectangle(plot, 1.5,1.5,0.8,0.5));
     rec->setStyleTransparentFill(col, 0.5, Qt::DashLine);
     rec->setAngle(35);
@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
     plot->addGraph(rec=new JKQTPGeoEllipse(plot, 1.5,1.5,0.8,0.5));
     rec->setStyleTransparentFill(col, 2, Qt::DashLine);
     rec->setAngle(35);
-    col=QColor("orange"); col.setAlphaF(0.2);
+    col=QColor("orange"); col.setAlphaF(0.2f);
     plot->addGraph(rec=new JKQTPGeoRectangle(plot, 1.5,1.5,0.6,0.6));
     rec->setStyleTransparentFill(col, 0.5, Qt::DotLine);
     rec->setAngle(-7);

@@ -527,20 +527,25 @@ QString jkqtp_QColor2String(QColor color, bool useSpecialTransparencySyntax) {
 
 QColor jkqtp_String2QColor(const QString &color)
 {
-    QRegExp rxP("(.+)\\s*,\\s*(\\d+\\.?\\d+)\\%");
-    QRegExp rxNP("(.+)\\s*,\\s*([\\d]+)");
-    if (rxP.exactMatch(color)) {
-        QColor col(rxP.cap(1));
-        double a=QLocale::c().toDouble(rxP.cap(2));
+    QRegularExpression rxP("(.+)\\s*,\\s*(\\d+\\.?\\d+)\\%");
+    QRegularExpression rxNP("(.+)\\s*,\\s*([\\d]+)");
+
+    auto rxPm = rxP.match(color);
+    if (rxPm.hasMatch()) {
+        QColor col(rxPm.captured(1));
+        double a=QLocale::c().toDouble(rxPm.captured(2));
         col.setAlphaF(a/100.0);
         return col;
     }
-    if (rxNP.exactMatch(color)) {
-        QColor col(rxNP.cap(1));
-        double a=QLocale::c().toInt(rxNP.cap(2));
-        col.setAlphaF(a/255.0);
+
+    auto rxNPm = rxNP.match(color);
+    if (rxNPm.hasMatch()) {
+        QColor col(rxNPm.captured(1));
+        double a = QLocale::c().toInt(rxNPm.captured(2));
+        col.setAlphaF(a / 255.0);
         return col;
     }
+
     return QColor(color);
 }
 

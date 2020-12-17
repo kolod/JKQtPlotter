@@ -1195,7 +1195,7 @@ class JKQTMATHTEXT_LIB_EXPORT JKQTMathText : public QObject {
 
 
 
-inline uint qHash(const JKQTMathText::tbrDataH& data) {
+inline size_t qHash(const JKQTMathText::tbrDataH& data) {
     return qHash(data.f.family())+qHash(data.text);
 }
 

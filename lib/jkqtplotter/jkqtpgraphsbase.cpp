@@ -59,7 +59,6 @@ QImage JKQTPPlotElement::generateKeyMarker(QSize size)
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.setRenderHint(QPainter::TextAntialiasing, true);
         painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
         QRectF rect(0,0,size.width(),size.height());
         drawKeyMarker(painter, rect);
     }
@@ -421,18 +420,6 @@ void JKQTPXYGraph::setXYColumns(std::pair<int, int> xyColPair)
 }
 
 void JKQTPXYGraph::setXYColumns(std::pair<size_t, size_t> xyColPair)
-{
-    setXColumn(xyColPair.first);
-    setYColumn(xyColPair.second);
-}
-
-void JKQTPXYGraph::setXYColumns(QPair<int, int> xyColPair)
-{
-    setXColumn(xyColPair.first);
-    setYColumn(xyColPair.second);
-}
-
-void JKQTPXYGraph::setXYColumns(QPair<size_t, size_t> xyColPair)
 {
     setXColumn(xyColPair.first);
     setYColumn(xyColPair.second);
