@@ -35,7 +35,7 @@ add_executable(${EXENAME} WIN32 simpletest.cpp)
 # ... link against Qt6 and JKQTPlotterLib
 #    (you could use JKQTPlotterSharedLib if you don't want to link againast the
 #     static version, but against the shared/DLL version).
-target_link_libraries(${EXENAME} Qt6::Core Qt6::Widgets Qt6::Gui Qt6::PrintSupport Qt6::Svg Qt6::Xml JKQTPlotterLib)
+target_link_libraries(${EXENAME} Qt::Core Qt::Widgets Qt::Gui Qt::PrintSupport Qt::Svg Qt::Xml JKQTPlotterLib)
 
 # Installation
 install(TARGETS ${EXENAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

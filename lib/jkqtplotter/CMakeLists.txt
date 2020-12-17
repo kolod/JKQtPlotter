@@ -144,7 +144,7 @@ if(JKQtPlotter_BUILD_SHARED_LIBS)
     add_library(${libsh_name} SHARED  ${SOURCES} ${SOURCES_GRAPHS} ${SOURCES_GUI} ${HEADERS} ${HEADERS_GRAPHS} ${HEADERS_GUI} ${RESOURCES})
     set_property(TARGET ${libsh_name} PROPERTY VERSION "${PROJECT_VERSION}")
     set_property(TARGET ${libsh_name} PROPERTY OUTPUT_NAME  "${libsh_name_decorated}")
-    target_link_libraries(${libsh_name} PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::PrintSupport Qt6::Svg Qt6::Xml JKQTCommonSharedLib JKQTMathTextSharedLib)
+    target_link_libraries(${libsh_name} PUBLIC Qt::Core Qt::Gui Qt::Widgets Qt::PrintSupport Qt::Svg Qt::Xml JKQTCommonSharedLib JKQTMathTextSharedLib)
     set_property(TARGET ${libsh_name} PROPERTY CXX_STANDARD 11)
     set_property(TARGET ${libsh_name} PROPERTY CXX_STANDARD_REQUIRED TRUE)
     target_compile_features(${libsh_name} PUBLIC cxx_std_11)
@@ -187,7 +187,7 @@ if(JKQtPlotter_BUILD_STATIC_LIBS)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
-    target_link_libraries(${lib_name} PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::PrintSupport Qt6::Svg Qt6::Xml JKQTCommonLib JKQTMathTextLib)
+    target_link_libraries(${lib_name} PUBLIC Qt::Core Qt::Gui Qt::Widgets Qt::PrintSupport Qt::Svg Qt::Xml JKQTCommonLib JKQTMathTextLib)
     write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Version.cmake
                                      VERSION ${PROJECT_VERSION}
                                      COMPATIBILITY AnyNewerVersion )
@@ -255,5 +255,5 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${lib_name}_Readme.txt" DESTINATION d
 install(FILES "${PROJECT_SOURCE_DIR}/LICENSE" DESTINATION doc/JKQtPlotter RENAME "${lib_name}_LICENSE.txt" )
 
 
-#get_target_property(printsupp_inc Qt6::PrintSupport INTERFACE_INCLUDE_DIRECTORIES)
-#message("Qt6::PrintSupport::INTERFACE_INCLUDE_DIRECTORIES = ${printsupp_inc}")
+#get_target_property(printsupp_inc Qt::PrintSupport INTERFACE_INCLUDE_DIRECTORIES)
+#message("Qt::PrintSupport::INTERFACE_INCLUDE_DIRECTORIES = ${printsupp_inc}")
